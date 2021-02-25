@@ -13,7 +13,6 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 50px;
-  overflow: hidden;
   > ${Title} {
     @media (max-width: 1000px) {
       margin-left: 30px;
@@ -29,11 +28,11 @@ export const Group = styled.div`
   flex-direction: ${({ flexDirection }) => (flexDirection === 'row' ? 'row' : 'column')};
   ${({ alignItems }) => alignItems && `align-items: ${alignItems}`};
   ${({ margin }) => margin && `margin: ${margin}`};
-  > ${Container}:first-of-type {
-    @media (min-width: 1100px) {
-      margin-top: -100px;
-    }
+  
+  @media (min-width: 1100px) {
+    margin-top: -100px;
   }
+  overflow: hidden;
 `;
 
 export const SubTitle = styled.p`
@@ -54,11 +53,27 @@ export const Text = styled.p`
   user-select: none;
   display: none;
   line-height: normal;
+  white-space: normal;
+`;
+
+export const Nav = styled.div`
+  width: 4%;
+  height: 172px;
+  background: rgba(0,0,0,0.5);
+  display: inline-block;
+  flex-shrink:0;
+  z-index: 101;
+  position: relative;
+  cursor: pointer;
+`;
+
+export const Track = styled.div`
+  width: 92%;
+  display: inline-block;
 `;
 
 export const Entities = styled.div`
-  display: flex;
-  flex-direction: row;
+  white-space:nowrap;
 `;
 
 export const Meta = styled.div`
@@ -67,6 +82,8 @@ export const Meta = styled.div`
   bottom: 0;
   padding: 10px;
   background-color: #0000008f;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const Image = styled.img`
@@ -80,12 +97,13 @@ export const Image = styled.img`
 `;
 
 export const Item = styled.div`
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   margin-right: 5px;
   position: relative;
   cursor: pointer;
   transition: transform 0.2s;
+  transition-delay: 0s;
   &:hover {
     transform: scale(1.3);
     z-index: 99;
@@ -95,12 +113,6 @@ export const Item = styled.div`
       display: block;
       z-index: 100;
     }
-  }
-  &:first-of-type {
-    margin-left: 4%;
-  }
-  &:last-of-type {
-    margin-right: 4%;
   }
 `;
 

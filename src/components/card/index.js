@@ -16,6 +16,8 @@ import {
   Entities,
   Item,
   Image,
+  Nav,
+  Track
 } from './styles/card';
 
 export const FeatureContext = createContext();
@@ -30,6 +32,12 @@ export default function Card({ children, ...restProps }) {
     </FeatureContext.Provider>
   );
 }
+Card.Nav = function CardNav({children, ...restProps}) {
+  return <Nav {...restProps}>{children}</Nav>;
+};
+Card.Track = function CardTrack({children, ...restProps}) {
+  return <Track {...restProps}>{children}</Track>;
+};
 
 Card.Group = function CardGroup({ children, ...restProps }) {
   return <Group {...restProps}>{children}</Group>;

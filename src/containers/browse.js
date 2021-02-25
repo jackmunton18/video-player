@@ -13,6 +13,7 @@ export function BrowseContainer({ slides }) {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [slideRows, setSlideRows] = useState([]);
+  const [slideScroll, setSlideScroll] = useState([0,0,0,0,0,0,0,0,0,0,0]);
 
   const { firebase } = useContext(FirebaseContext);
   const user = firebase.auth().currentUser || {};
@@ -37,6 +38,32 @@ export function BrowseContainer({ slides }) {
       setSlideRows(slides[category]);
     }
   }, [searchTerm]);
+
+  const scrollLeft = function (arrayIndex){
+
+    let arr = slideScroll,
+        cardWidth = 310;
+
+    if (arr[arrayIndex] < 0) {
+      arr[arrayIndex] += cardWidth;
+    }
+    setSlideScroll(arr);
+
+  }
+  const scrollRight = function (arrayIndex){
+
+
+    let arr = slideScroll,
+        cardWidth = 310,
+        arrL = arr.length,
+        arrW = cardWidth * arrL;
+
+    if (arr[arrayIndex] > -Math.abs(arrW)) {
+      arr[arrayIndex] -= cardWidth;
+    }
+    setSlideScroll(arr);
+
+  }
 
   return profile.displayName ? (
     <>
@@ -82,25 +109,39 @@ export function BrowseContainer({ slides }) {
       </Header>
 
       <Card.Group>
-        {slideRows.map((slideItem) => (
+        {slideRows.map((slideItem, idx) => (
           <Card key={`${category}-${slideItem.title.toLowerCase()}`}>
             <Card.Title>{slideItem.title}</Card.Title>
             <Card.Entities>
-              {slideItem.data.map((item) => (
-                <Card.Item key={item.docId} item={item}>
-                  <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
-                  <Card.Meta>
-                    <Card.SubTitle>{item.title}</Card.SubTitle>
-                    <Card.Text>{item.description}</Card.Text>
-                  </Card.Meta>
-                </Card.Item>
-              ))}
+              <Card.Nav onClick={() => scrollLeft(idx)}></Card.Nav>
+              
+              <Card.Track scroll={`${slideScroll.idx}`}>
+                {slideItem.data.map((item) => (
+                  <Card.Item key={item.docId} item={item}>
+                    <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
+                    <Card.Meta>
+                      <Card.SubTitle>{item.title}</Card.SubTitle>
+                      <Card.Text>{item.description}</Card.Text>
+                    </Card.Meta>
+                  </Card.Item>
+                ))}
+                {slideItem.data.map((item) => (
+                  <Card.Item key={item.docId} item={item}>
+                    <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
+                    <Card.Meta>
+                      <Card.SubTitle>{item.title}</Card.SubTitle>
+                      <Card.Text>{item.description}</Card.Text>
+                    </Card.Meta>
+                  </Card.Item>
+                ))}
+              </Card.Track>
+              <Card.Nav onClick={() => scrollRight(idx)}></Card.Nav>
             </Card.Entities>
             <Card.Feature category={category}>
-              <Player>
+              {/* <Player>
                 <Player.Button />
                 <Player.Video src="/videos/bunny.mp4" />
-              </Player>
+              </Player> */}
             </Card.Feature>
           </Card>
         ))}
