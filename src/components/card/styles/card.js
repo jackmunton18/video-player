@@ -70,6 +70,8 @@ export const Nav = styled.div`
 export const Track = styled.div`
   width: 92%;
   display: inline-block;
+  ${({ scroll }) => scroll && `transform: translateX(${scroll}px)`};
+
 `;
 
 export const Entities = styled.div`
