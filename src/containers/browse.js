@@ -13,7 +13,10 @@ export function BrowseContainer({ slides }) {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [slideRows, setSlideRows] = useState([]);
+<<<<<<< HEAD
   const [slideScroll, setSlideScroll] = useState(0);
+=======
+>>>>>>> 1d549661cbdb11887cee0cd97946856b76746a81
 
   const { firebase } = useContext(FirebaseContext);
   const user = firebase.auth().currentUser || {};
@@ -39,6 +42,7 @@ export function BrowseContainer({ slides }) {
     }
   }, [searchTerm]);
 
+<<<<<<< HEAD
   const scrollLeft = function (arrayIndex){
 
     let arr = slideScroll,
@@ -61,6 +65,8 @@ export function BrowseContainer({ slides }) {
     console.log(slideScroll)
 
   }
+=======
+>>>>>>> 1d549661cbdb11887cee0cd97946856b76746a81
 
   return profile.displayName ? (
     <>
@@ -107,11 +113,68 @@ export function BrowseContainer({ slides }) {
 
       <Card.Group>
         {slideRows.map((slideItem, idx) => (
-          <Card key={`${category}-${slideItem.title.toLowerCase()}`}>
+          <Tracks key={idx} data={{
+            slideItem: slideItem,
+            index: idx,
+            category: category
+
+          }}></Tracks>
+        ))}
+      </Card.Group>
+      <FooterContainer />
+    </>
+  ) : (
+    <SelectProfileContainer user={user} setProfile={setProfile} />
+  );
+}
+
+class Tracks extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scroll: 0
+    }
+    this.scrollLeft = this.scrollLeft.bind(this);
+    this.scrollRight = this.scrollRight.bind(this);
+  }
+
+  scrollLeft() {
+    let scroll = this.state.scroll,
+    cardWidth = 310;
+
+    if (scroll < 0) {
+      console.log(scroll);
+      this.setState({
+        scroll: scroll + cardWidth
+      })        
+    } 
+  }
+  scrollRight() {
+    let scroll = this.state.scroll,
+          cardWidth = 310,
+          cardCount = this.props.data.slideItem.data.length,
+          trackWidth = cardWidth * cardCount;
+
+      if (scroll > -Math.abs(trackWidth)) {
+        console.log(scroll - cardWidth);
+        this.setState({
+          scroll: scroll - cardWidth
+        })   
+      }
+
+  }
+
+  render () {
+    const slideItem = this.props.data.slideItem,
+          category = this.props.data.category;
+       
+    return (
+      <Card key={`${this.props.data.category}-${slideItem.title.toLowerCase()}`}>
             <Card.Title>{slideItem.title}</Card.Title>
             <Card.Entities>
-              <Card.Nav onClick={() => scrollLeft(idx)}></Card.Nav>
+              <Card.Nav onClick={() =>this.scrollLeft()}></Card.Nav>
               
+<<<<<<< HEAD
               <Card.Track scroll={slideScroll}>
                 {slideItem.data.map((item) => (
                   <Card.Item key={item.docId} item={item}>
@@ -122,6 +185,9 @@ export function BrowseContainer({ slides }) {
                     </Card.Meta>
                   </Card.Item>
                 ))}
+=======
+              <Card.Track scroll={this.state.scroll}>
+>>>>>>> 1d549661cbdb11887cee0cd97946856b76746a81
                 {slideItem.data.map((item) => (
                   <Card.Item key={item.docId} item={item}>
                     <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
@@ -132,7 +198,7 @@ export function BrowseContainer({ slides }) {
                   </Card.Item>
                 ))}
               </Card.Track>
-              <Card.Nav onClick={() => scrollRight(idx)}></Card.Nav>
+              <Card.Nav onClick={() => this.scrollRight()}></Card.Nav>
             </Card.Entities>
             <Card.Feature category={category}>
               {/* <Player>
@@ -141,11 +207,6 @@ export function BrowseContainer({ slides }) {
               </Player> */}
             </Card.Feature>
           </Card>
-        ))}
-      </Card.Group>
-      <FooterContainer />
-    </>
-  ) : (
-    <SelectProfileContainer user={user} setProfile={setProfile} />
-  );
+    )
+  }
 }

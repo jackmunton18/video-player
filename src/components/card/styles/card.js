@@ -73,8 +73,13 @@ export const Nav = styled.div`
 export const Track = styled.div`
   width: 92%;
   display: inline-block;
+<<<<<<< HEAD
   transition: .2s ease-out;
   ${({ scroll }) => scroll && `transform: translateX(${scroll}px)`};
+=======
+  ${({ scroll }) => scroll && `transform: translateX(${scroll}px)`};
+
+>>>>>>> 1d549661cbdb11887cee0cd97946856b76746a81
 `;
 
 export const Entities = styled.div`
