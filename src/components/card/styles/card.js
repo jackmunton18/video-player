@@ -33,6 +33,7 @@ export const Group = styled.div`
     margin-top: -100px;
   }
   overflow: hidden;
+  padding-bottom: 50px;
 `;
 
 export const SubTitle = styled.p`
@@ -42,7 +43,8 @@ export const SubTitle = styled.p`
   margin-top: 0;
   margin-bottom: 0;
   user-select: none;
-  display: none;
+  display: block;
+  opacity: 0;
 `;
 
 export const Text = styled.p`
@@ -51,7 +53,8 @@ export const Text = styled.p`
   color: #fff;
   margin-bottom: 0;
   user-select: none;
-  display: none;
+  display: block;
+  opacity: 0;
   line-height: normal;
   white-space: normal;
 `;
@@ -70,6 +73,8 @@ export const Nav = styled.div`
 export const Track = styled.div`
   width: 92%;
   display: inline-block;
+  transition: .2s ease-out;
+  ${({ scroll }) => scroll && `transform: translateX(${scroll}px)`};
 `;
 
 export const Entities = styled.div`
@@ -77,7 +82,9 @@ export const Entities = styled.div`
 `;
 
 export const Meta = styled.div`
-  display: none;
+  display: block;
+  opacity: 0;
+  transition-delay: 0s;
   position: absolute;
   bottom: 0;
   padding: 10px;
@@ -104,13 +111,16 @@ export const Item = styled.div`
   cursor: pointer;
   transition: transform 0.2s;
   transition-delay: 0s;
+  max-width: 305px;
   &:hover {
     transform: scale(1.3);
+    transition-delay: 1s;
     z-index: 99;
   }
   @media (min-width: 1200px) {
     &:hover ${Meta}, &:hover ${Text}, &:hover ${SubTitle} {
-      display: block;
+      transition-delay: 1s;
+      opacity: 1;
       z-index: 100;
     }
   }

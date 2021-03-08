@@ -13,7 +13,7 @@ export function BrowseContainer({ slides }) {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [slideRows, setSlideRows] = useState([]);
-  const [slideScroll, setSlideScroll] = useState([0,0,0,0,0,0,0,0,0,0,0]);
+  const [slideScroll, setSlideScroll] = useState(0);
 
   const { firebase } = useContext(FirebaseContext);
   const user = firebase.auth().currentUser || {};
@@ -42,26 +42,23 @@ export function BrowseContainer({ slides }) {
   const scrollLeft = function (arrayIndex){
 
     let arr = slideScroll,
-        cardWidth = 310;
+      cardWidth = 310;
 
-    if (arr[arrayIndex] < 0) {
-      arr[arrayIndex] += cardWidth;
-    }
+    arr += cardWidth;
     setSlideScroll(arr);
+
+    console.log(slideScroll)
 
   }
   const scrollRight = function (arrayIndex){
 
 
     let arr = slideScroll,
-        cardWidth = 310,
-        arrL = arr.length,
-        arrW = cardWidth * arrL;
+      cardWidth = 310;
 
-    if (arr[arrayIndex] > -Math.abs(arrW)) {
-      arr[arrayIndex] -= cardWidth;
-    }
+    arr -= cardWidth;
     setSlideScroll(arr);
+    console.log(slideScroll)
 
   }
 
@@ -115,7 +112,7 @@ export function BrowseContainer({ slides }) {
             <Card.Entities>
               <Card.Nav onClick={() => scrollLeft(idx)}></Card.Nav>
               
-              <Card.Track scroll={`${slideScroll.idx}`}>
+              <Card.Track scroll={slideScroll}>
                 {slideItem.data.map((item) => (
                   <Card.Item key={item.docId} item={item}>
                     <Card.Image src={`/images/${category}/${item.genre}/${item.slug}/small.jpg`} />
